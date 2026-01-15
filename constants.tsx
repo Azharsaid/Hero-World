@@ -1,237 +1,119 @@
-import { Character, Game, Soundtrack, GameType } from './types';
+import { Character, Game, Soundtrack } from './types';
 
-// Vite sets BASE_URL based on `base` in vite.config.ts
-// This keeps paths correct on GitHub Pages (/Hero-World/...)
+// GitHub Pages project site uses /Hero-World/ as base.
+// Vite exposes that base as import.meta.env.BASE_URL.
 const BASE = import.meta.env.BASE_URL;
+
+// Helpers to make paths safe on GitHub Pages
+const char = (file: string) => `${BASE}characters/${file}`;
+const track = (file: string) => `${BASE}soundtracks/${file}`;
 
 export const CHARACTERS: Character[] = [
   {
     id: 'fares',
     name: { en: 'Fares', ar: 'فارس' },
-    imageUrl: `${BASE}characters/fares.jpg`,
+    imageUrl: char('fares.jpg'),
     color: 'from-blue-400 to-cyan-300',
     description: { en: 'The smart doctor who helps everyone', ar: 'الطبيب الذكي الذي يساعد الجميع' }
   },
   {
     id: 'taj',
     name: { en: 'Taj', ar: 'تاج' },
-    imageUrl: `${BASE}characters/Taj.JPG`,
+    imageUrl: char('Taj.JPG'),
     color: 'from-pink-400 to-rose-300',
     description: { en: 'The little princess who loves adventure', ar: 'الأميرة الصغيرة التي تحب المغامرة' }
   },
   {
     id: 'faisal',
     name: { en: 'Faisal', ar: 'فيصل' },
-    imageUrl: `${BASE}characters/Faisal.JPG`,
+    imageUrl: char('Faisal.JPG'),
     color: 'from-yellow-400 to-orange-300',
     description: { en: 'The champion of colorful balloons', ar: 'بطل البالونات الملونة' }
   },
   {
     id: 'elyas',
     name: { en: 'Elyas', ar: 'إلياس' },
-    imageUrl: `${BASE}characters/Elyas.JPG`,
+    imageUrl: char('Elyas.JPG'),
     color: 'from-blue-500 to-indigo-400',
     description: { en: 'The brave doctor ready for any challenge', ar: 'الطبيب الشجاع المستعد لأي تحدي' }
   },
   {
     id: 'misk',
     name: { en: 'Misk', ar: 'مسك' },
-    imageUrl: `${BASE}characters/Misk.JPG`,
+    imageUrl: char('Misk.JPG'),
     color: 'from-purple-400 to-pink-300',
     description: { en: 'The elegant girl with a kind heart', ar: 'الفتاة الأنيقة ذات القلب الطيب' }
   },
   {
     id: 'joud',
     name: { en: 'Joud', ar: 'جود' },
-    imageUrl: `${BASE}characters/Joud.JPG`,
+    imageUrl: char('Joud.JPG'),
     color: 'from-red-300 to-pink-300',
     description: { en: 'The joyful star that brightens the day', ar: 'النجمة المرحة التي تضيء اليوم' }
   },
   {
     id: 'tanya',
     name: { en: 'Tanya', ar: 'تانيا' },
-    imageUrl: `${BASE}characters/tanya.jpg`,
+    imageUrl: char('tanya.jpg'),
     color: 'from-amber-200 to-yellow-100',
     description: { en: 'The curious explorer with flowers', ar: 'المستكشفة الفضولية مع الزهور' }
   },
   {
     id: 'alice',
     name: { en: 'Alice', ar: 'أليس' },
-    imageUrl: `${BASE}characters/Alice.JPG`,
+    imageUrl: char('Alice.JPG'),
     color: 'from-gray-700 to-gray-500',
     description: { en: 'The little princess full of smiles', ar: 'الأميرة الصغيرة المليئة بالابتسامات' }
   }
 ];
 
-// Helper to keep compatibility if some parts use `name` and others use `title`
-const mkGame = (g: {
-  id: string;
-  type: GameType;
-  icon: string;
-  color: string;
-  title: { en: string; ar: string };
-  description: { en: string; ar: string };
-}): Game => ({
-  ...g,
-  // @ts-expect-error: keep compatibility with older code that might use `name`
-  name: g.title,
-});
-
+// Keeping your current 3 games exactly as-is (no changes here)
 export const GAMES: Game[] = [
-  mkGame({
+  {
     id: 'memory',
-    type: GameType.MEMORY,
+    name: { en: 'Memory Cards', ar: 'بطاقات الذاكرة' },
     icon: '🎴',
     color: 'bg-purple-500',
-    title: { en: 'Memory Cards', ar: 'بطاقات الذاكرة' },
     description: { en: 'Find matching pairs!', ar: 'جد البطاقات المتطابقة!' }
-  }),
-  mkGame({
+  },
+  {
     id: 'math',
-    type: GameType.MATH,
+    name: { en: 'Math Hero', ar: 'بطل الرياضيات' },
     icon: '🔢',
     color: 'bg-blue-500',
-    title: { en: 'Math Hero', ar: 'بطل الرياضيات' },
     description: { en: 'Solve fun math problems!', ar: 'حل مسائل حسابية ممتعة!' }
-  }),
-  mkGame({
+  },
+  {
     id: 'colors',
-    type: GameType.COLOR_MATCH,
+    name: { en: 'Color Master', ar: 'سيد الألوان' },
     icon: '🎨',
     color: 'bg-pink-500',
-    title: { en: 'Color Master', ar: 'سيد الألوان' },
     description: { en: 'Match the colors!', ar: 'طابق الألوان!' }
-  }),
-
-  // Add the rest (your GameView already supports these):
-  mkGame({
-    id: 'alphabet',
-    type: GameType.ALPHABET,
-    icon: '🔤',
-    color: 'bg-emerald-500',
-    title: { en: 'Alphabet Adventure', ar: 'مغامرة الحروف' },
-    description: { en: 'Learn letters with fun!', ar: 'تعلّم الحروف بطريقة ممتعة!' }
-  }),
-  mkGame({
-    id: 'piano',
-    type: GameType.PIANO,
-    icon: '🎹',
-    color: 'bg-indigo-500',
-    title: { en: 'Magical Piano', ar: 'البيانو السحري' },
-    description: { en: 'Play music notes!', ar: 'اعزف نغمات جميلة!' }
-  }),
-  mkGame({
-    id: 'shadow',
-    type: GameType.SHADOW_MATCH,
-    icon: '👤',
-    color: 'bg-slate-600',
-    title: { en: 'Shadow Match', ar: 'طابق الظلال' },
-    description: { en: 'Match the shape to its shadow!', ar: 'طابق الشكل مع ظله!' }
-  }),
-  mkGame({
-    id: 'fruit_catch',
-    type: GameType.FRUIT_CATCH,
-    icon: '🍓',
-    color: 'bg-red-500',
-    title: { en: 'Fruit Catch', ar: 'اصطياد الفواكه' },
-    description: { en: 'Catch the fruits!', ar: 'التقط الفواكه بسرعة!' }
-  }),
-  mkGame({
-    id: 'drawing',
-    type: GameType.DRAWING_PAD,
-    icon: '✏️',
-    color: 'bg-amber-500',
-    title: { en: 'Drawing Pad', ar: 'لوحة الرسم' },
-    description: { en: 'Draw and color!', ar: 'ارسم ولوّن!' }
-  }),
-  mkGame({
-    id: 'shape_puzzle',
-    type: GameType.SHAPE_PUZZLE,
-    icon: '🧩',
-    color: 'bg-orange-500',
-    title: { en: 'Shape Puzzle', ar: 'أحجية الأشكال' },
-    description: { en: 'Fit shapes in the right place!', ar: 'ضع الشكل في المكان الصحيح!' }
-  }),
-  mkGame({
-    id: 'balloon_pop',
-    type: GameType.BALLOON_POP,
-    icon: '🎈',
-    color: 'bg-fuchsia-500',
-    title: { en: 'Balloon Pop', ar: 'فرقعة البالونات' },
-    description: { en: 'Pop the balloons!', ar: 'فرقع البالونات!' }
-  }),
-  mkGame({
-    id: 'treasure',
-    type: GameType.TREASURE_HUNT,
-    icon: '🗺️',
-    color: 'bg-teal-600',
-    title: { en: 'Treasure Hunt', ar: 'البحث عن الكنز' },
-    description: { en: 'Find the hidden treasure!', ar: 'اعثر على الكنز المخفي!' }
-  }),
-  mkGame({
-    id: 'odd_one_out',
-    type: GameType.ODD_ONE_OUT,
-    icon: '🧐',
-    color: 'bg-cyan-600',
-    title: { en: 'Odd One Out', ar: 'المختلف' },
-    description: { en: 'Pick what doesn’t belong!', ar: 'اختر العنصر المختلف!' }
-  }),
-  mkGame({
-    id: 'counting',
-    type: GameType.COUNTING,
-    icon: '⭐',
-    color: 'bg-yellow-500',
-    title: { en: 'Counting Stars', ar: 'عدّ النجوم' },
-    description: { en: 'Count and learn numbers!', ar: 'عدّ وتعلّم الأرقام!' }
-  }),
-  mkGame({
-    id: 'logic_patterns',
-    type: GameType.LOGIC,
-    icon: '🧠',
-    color: 'bg-lime-600',
-    title: { en: 'Logic Patterns', ar: 'أنماط منطقية' },
-    description: { en: 'Solve pattern puzzles!', ar: 'حل ألغاز الأنماط!' }
-  }),
-  mkGame({
-    id: 'sudoku',
-    type: GameType.LOGIC,
-    icon: '🔲',
-    color: 'bg-green-700',
-    title: { en: 'Sudoku', ar: 'سودوكو' },
-    description: { en: 'Fill the grid smartly!', ar: 'املأ الشبكة بذكاء!' }
-  }),
-  mkGame({
-    id: 'simon',
-    type: GameType.SIMON_SAYS,
-    icon: '🟣',
-    color: 'bg-violet-600',
-    title: { en: 'Simon Says', ar: 'سيمون يقول' },
-    description: { en: 'Repeat the sequence!', ar: 'كرر التسلسل الصحيح!' }
-  }),
-  mkGame({
-    id: 'story',
-    type: GameType.STORY_MAKER,
-    icon: '📖',
-    color: 'bg-rose-600',
-    title: { en: 'Story Maker', ar: 'صانع القصص' },
-    description: { en: 'Create a fun story!', ar: 'اصنع قصة ممتعة!' }
-  }),
+  }
 ];
 
+// ✅ NEW: local soundtracks ONLY (old URLs removed completely)
 export const SOUNDTRACKS: Soundtrack[] = [
-  {
-    id: 'adventure',
-    name: { en: 'Adventure', ar: 'مغامرة' },
-    url: 'https://actions.google.com/sounds/v1/ambiences/forest_morning.ogg'
-  },
-  {
-    id: 'happy',
-    name: { en: 'Happy Day', ar: 'يوم سعيد' },
-    url: 'https://actions.google.com/sounds/v1/cartoon/cartoon_boing.ogg'
-  },
-  {
-    id: 'calm',
-    name: { en: 'Calm', ar: 'هدوء' },
-    url: 'https://actions.google.com/sounds/v1/water/gentle_stream.ogg'
-  }
+  { id: 't01', name: { en: 'Track 01', ar: 'مقطوعة 1' }, url: track('1.mp3') },
+  { id: 't02', name: { en: 'Track 02', ar: 'مقطوعة 2' }, url: track('2.mp3') },
+  { id: 't03', name: { en: 'Track 03', ar: 'مقطوعة 3' }, url: track('3.mp3') },
+  { id: 't04', name: { en: 'Track 04', ar: 'مقطوعة 4' }, url: track('4.mp3') },
+  { id: 't05', name: { en: 'Track 05', ar: 'مقطوعة 5' }, url: track('5.mp3') },
+  { id: 't06', name: { en: 'Track 06', ar: 'مقطوعة 6' }, url: track('6.mp3') },
+  { id: 't07', name: { en: 'Track 07', ar: 'مقطوعة 7' }, url: track('7.mp3') },
+  { id: 't08', name: { en: 'Track 08', ar: 'مقطوعة 8' }, url: track('8.mp3') },
+  { id: 't09', name: { en: 'Track 09', ar: 'مقطوعة 9' }, url: track('9.mp3') },
+  { id: 't10', name: { en: 'Track 10', ar: 'مقطوعة 10' }, url: track('10.mp3') },
+  { id: 't11', name: { en: 'Track 11', ar: 'مقطوعة 11' }, url: track('11.mp3') },
+  { id: 't12', name: { en: 'Track 12', ar: 'مقطوعة 12' }, url: track('12.mp3') },
+  { id: 't13', name: { en: 'Track 13', ar: 'مقطوعة 13' }, url: track('13.mp3') },
+  { id: 't14', name: { en: 'Track 14', ar: 'مقطوعة 14' }, url: track('14.mp3') },
+  { id: 't15', name: { en: 'Track 15', ar: 'مقطوعة 15' }, url: track('15.mp3') },
+  { id: 't16', name: { en: 'Track 16', ar: 'مقطوعة 16' }, url: track('16.mp3') },
+  { id: 't17', name: { en: 'Track 17', ar: 'مقطوعة 17' }, url: track('17.mp3') },
+  { id: 't18', name: { en: 'Track 18', ar: 'مقطوعة 18' }, url: track('18.mp3') },
+  { id: 't19', name: { en: 'Track 19', ar: 'مقطوعة 19' }, url: track('19.mp3') },
+  { id: 't20', name: { en: 'Track 20', ar: 'مقطوعة 20' }, url: track('20.mp3') },
+  { id: 't21', name: { en: 'Track 21', ar: 'مقطوعة 21' }, url: track('21.mp3') },
+  { id: 't22', name: { en: 'Track 22', ar: 'مقطوعة 22' }, url: track('22.mp3') }
 ];
