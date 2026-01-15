@@ -1,11 +1,11 @@
 import { Character, Game, Soundtrack } from './types';
 
-// Updated to match your EXACT filenames on GitHub (Case Sensitive)
 export const CHARACTERS: Character[] = [
   {
     id: 'fares',
     name: { en: 'Fares', ar: 'فارس' },
-    image: './characters/fares.jpeg', // Changed to .jpeg
+    // Using absolute path with /Hero-World/ prefix
+    image: '/Hero-World/characters/fares.jpeg', 
     color: 'from-blue-400 to-cyan-300',
     description: { 
       en: 'The smart doctor who helps everyone', 
@@ -15,7 +15,7 @@ export const CHARACTERS: Character[] = [
   {
     id: 'taj',
     name: { en: 'Taj', ar: 'تاج' },
-    image: './characters/Taj.JPG', // Changed to Capital T and .JPG
+    image: '/Hero-World/characters/Taj.JPG',
     color: 'from-pink-400 to-rose-300',
     description: { 
       en: 'The little princess who loves adventure', 
@@ -25,7 +25,7 @@ export const CHARACTERS: Character[] = [
   {
     id: 'faisal',
     name: { en: 'Faisal', ar: 'فيصل' },
-    image: './characters/Faisal.JPG', // Changed to Capital F and .JPG
+    image: '/Hero-World/characters/Faisal.JPG',
     color: 'from-yellow-400 to-orange-300',
     description: { 
       en: 'The champion of colorful balloons', 
@@ -35,7 +35,7 @@ export const CHARACTERS: Character[] = [
   {
     id: 'elyas',
     name: { en: 'Elyas', ar: 'إلياس' },
-    image: './characters/Elyas.JPG', // Changed to Capital E and .JPG
+    image: '/Hero-World/characters/Elyas.JPG',
     color: 'from-blue-500 to-indigo-400',
     description: { 
       en: 'The brave doctor ready for any challenge', 
@@ -45,7 +45,7 @@ export const CHARACTERS: Character[] = [
   {
     id: 'misk',
     name: { en: 'Misk', ar: 'مسك' },
-    image: './characters/Misk.JPG', // Changed to Capital M and .JPG
+    image: '/Hero-World/characters/Misk.JPG',
     color: 'from-purple-400 to-pink-300',
     description: { 
       en: 'The elegant girl with a kind heart', 
@@ -55,7 +55,7 @@ export const CHARACTERS: Character[] = [
   {
     id: 'joud',
     name: { en: 'Joud', ar: 'جود' },
-    image: './characters/Joud.JPG', // Changed to Capital J and .JPG
+    image: '/Hero-World/characters/Joud.JPG',
     color: 'from-red-300 to-pink-300',
     description: { 
       en: 'The joyful star that brightens the day', 
@@ -65,7 +65,7 @@ export const CHARACTERS: Character[] = [
   {
     id: 'tanya',
     name: { en: 'Tanya', ar: 'تانيا' },
-    image: './characters/tanya.jpeg', // Changed to .jpeg
+    image: '/Hero-World/characters/tanya.jpeg',
     color: 'from-amber-200 to-yellow-100',
     description: { 
       en: 'The curious explorer with flowers', 
@@ -75,7 +75,7 @@ export const CHARACTERS: Character[] = [
   {
     id: 'alice',
     name: { en: 'Alice', ar: 'أليس' },
-    image: './characters/Alice.JPG', // Changed to Capital A and .JPG
+    image: '/Hero-World/characters/Alice.JPG',
     color: 'from-gray-700 to-gray-500',
     description: { 
       en: 'The little princess full of smiles', 
