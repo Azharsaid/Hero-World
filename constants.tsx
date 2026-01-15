@@ -1,75 +1,80 @@
 import { Character, Game, Soundtrack, GameType } from './types';
 
-const withBase = (p: string) => {
-  const base = import.meta.env.BASE_URL || '/';
-  const clean = p.replace(/^\//, '');
-  return `${base}${clean}`;
-};
+// Vite sets BASE_URL based on `base` in vite.config.ts
+// This keeps paths correct on GitHub Pages (/Hero-World/...)
+const BASE = import.meta.env.BASE_URL;
 
 export const CHARACTERS: Character[] = [
   {
     id: 'fares',
     name: { en: 'Fares', ar: 'فارس' },
-    imageUrl: withBase('characters/fares.jpg'),
+    imageUrl: `${BASE}characters/fares.jpg`,
     color: 'from-blue-400 to-cyan-300',
-    description: { en: 'The smart doctor who helps everyone', ar: 'الطبيب الذكي الذي يساعد الجميع' },
+    description: { en: 'The smart doctor who helps everyone', ar: 'الطبيب الذكي الذي يساعد الجميع' }
   },
   {
     id: 'taj',
     name: { en: 'Taj', ar: 'تاج' },
-    imageUrl: withBase('characters/Taj.JPG'),
+    imageUrl: `${BASE}characters/Taj.JPG`,
     color: 'from-pink-400 to-rose-300',
-    description: { en: 'The little princess who loves adventure', ar: 'الأميرة الصغيرة التي تحب المغامرة' },
+    description: { en: 'The little princess who loves adventure', ar: 'الأميرة الصغيرة التي تحب المغامرة' }
   },
   {
     id: 'faisal',
     name: { en: 'Faisal', ar: 'فيصل' },
-    imageUrl: withBase('characters/Faisal.JPG'),
+    imageUrl: `${BASE}characters/Faisal.JPG`,
     color: 'from-yellow-400 to-orange-300',
-    description: { en: 'The champion of colorful balloons', ar: 'بطل البالونات الملونة' },
+    description: { en: 'The champion of colorful balloons', ar: 'بطل البالونات الملونة' }
   },
   {
     id: 'elyas',
     name: { en: 'Elyas', ar: 'إلياس' },
-    imageUrl: withBase('characters/Elyas.JPG'),
+    imageUrl: `${BASE}characters/Elyas.JPG`,
     color: 'from-blue-500 to-indigo-400',
-    description: { en: 'The brave doctor ready for any challenge', ar: 'الطبيب الشجاع المستعد لأي تحدي' },
+    description: { en: 'The brave doctor ready for any challenge', ar: 'الطبيب الشجاع المستعد لأي تحدي' }
   },
   {
     id: 'misk',
     name: { en: 'Misk', ar: 'مسك' },
-    imageUrl: withBase('characters/Misk.JPG'),
+    imageUrl: `${BASE}characters/Misk.JPG`,
     color: 'from-purple-400 to-pink-300',
-    description: { en: 'The elegant girl with a kind heart', ar: 'الفتاة الأنيقة ذات القلب الطيب' },
+    description: { en: 'The elegant girl with a kind heart', ar: 'الفتاة الأنيقة ذات القلب الطيب' }
   },
   {
     id: 'joud',
     name: { en: 'Joud', ar: 'جود' },
-    imageUrl: withBase('characters/Joud.JPG'),
+    imageUrl: `${BASE}characters/Joud.JPG`,
     color: 'from-red-300 to-pink-300',
-    description: { en: 'The joyful star that brightens the day', ar: 'النجمة المرحة التي تضيء اليوم' },
+    description: { en: 'The joyful star that brightens the day', ar: 'النجمة المرحة التي تضيء اليوم' }
   },
   {
     id: 'tanya',
     name: { en: 'Tanya', ar: 'تانيا' },
-    imageUrl: withBase('characters/tanya.jpg'),
+    imageUrl: `${BASE}characters/tanya.jpg`,
     color: 'from-amber-200 to-yellow-100',
-    description: { en: 'The curious explorer with flowers', ar: 'المستكشفة الفضولية مع الزهور' },
+    description: { en: 'The curious explorer with flowers', ar: 'المستكشفة الفضولية مع الزهور' }
   },
   {
     id: 'alice',
     name: { en: 'Alice', ar: 'أليس' },
-    imageUrl: withBase('characters/Alice.JPG'),
+    imageUrl: `${BASE}characters/Alice.JPG`,
     color: 'from-gray-700 to-gray-500',
-    description: { en: 'The little princess full of smiles', ar: 'الأميرة الصغيرة المليئة بالابتسامات' },
-  },
+    description: { en: 'The little princess full of smiles', ar: 'الأميرة الصغيرة المليئة بالابتسامات' }
+  }
 ];
 
-// Helper so your UI works whether it reads game.title or game.name
-const mkGame = (g: any): Game => ({
+// Helper to keep compatibility if some parts use `name` and others use `title`
+const mkGame = (g: {
+  id: string;
+  type: GameType;
+  icon: string;
+  color: string;
+  title: { en: string; ar: string };
+  description: { en: string; ar: string };
+}): Game => ({
   ...g,
-  title: g.title ?? g.name,
-  name: g.name ?? g.title,
+  // @ts-expect-error: keep compatibility with older code that might use `name`
+  name: g.title,
 });
 
 export const GAMES: Game[] = [
@@ -79,7 +84,7 @@ export const GAMES: Game[] = [
     icon: '🎴',
     color: 'bg-purple-500',
     title: { en: 'Memory Cards', ar: 'بطاقات الذاكرة' },
-    description: { en: 'Find matching pairs!', ar: 'جد البطاقات المتطابقة!' },
+    description: { en: 'Find matching pairs!', ar: 'جد البطاقات المتطابقة!' }
   }),
   mkGame({
     id: 'math',
@@ -87,7 +92,7 @@ export const GAMES: Game[] = [
     icon: '🔢',
     color: 'bg-blue-500',
     title: { en: 'Math Hero', ar: 'بطل الرياضيات' },
-    description: { en: 'Solve fun math problems!', ar: 'حل مسائل حسابية ممتعة!' },
+    description: { en: 'Solve fun math problems!', ar: 'حل مسائل حسابية ممتعة!' }
   }),
   mkGame({
     id: 'colors',
@@ -95,15 +100,17 @@ export const GAMES: Game[] = [
     icon: '🎨',
     color: 'bg-pink-500',
     title: { en: 'Color Master', ar: 'سيد الألوان' },
-    description: { en: 'Match the colors!', ar: 'طابق الألوان!' },
+    description: { en: 'Match the colors!', ar: 'طابق الألوان!' }
   }),
+
+  // Add the rest (your GameView already supports these):
   mkGame({
     id: 'alphabet',
     type: GameType.ALPHABET,
     icon: '🔤',
     color: 'bg-emerald-500',
     title: { en: 'Alphabet Adventure', ar: 'مغامرة الحروف' },
-    description: { en: 'Learn letters with fun!', ar: 'تعلم الحروف بطريقة ممتعة!' },
+    description: { en: 'Learn letters with fun!', ar: 'تعلّم الحروف بطريقة ممتعة!' }
   }),
   mkGame({
     id: 'piano',
@@ -111,125 +118,120 @@ export const GAMES: Game[] = [
     icon: '🎹',
     color: 'bg-indigo-500',
     title: { en: 'Magical Piano', ar: 'البيانو السحري' },
-    description: { en: 'Play sounds and melodies!', ar: 'اعزف أصوات وألحان!' },
+    description: { en: 'Play music notes!', ar: 'اعزف نغمات جميلة!' }
   }),
   mkGame({
     id: 'shadow',
     type: GameType.SHADOW_MATCH,
     icon: '👤',
     color: 'bg-slate-600',
-    title: { en: 'Shadow Match', ar: 'طابق الظل' },
-    description: { en: 'Match the shape to its shadow!', ar: 'طابق الشكل مع ظله!' },
+    title: { en: 'Shadow Match', ar: 'طابق الظلال' },
+    description: { en: 'Match the shape to its shadow!', ar: 'طابق الشكل مع ظله!' }
   }),
   mkGame({
-    id: 'logic',
-    type: GameType.LOGIC,
-    icon: '🧠',
-    color: 'bg-teal-500',
-    title: { en: 'Logic Patterns', ar: 'أنماط المنطق' },
-    description: { en: 'Spot patterns and solve!', ar: 'اكتشف الأنماط وحل!' },
-  }),
-  mkGame({
-    id: 'sudoku',
-    type: GameType.LOGIC,
-    icon: '🧩',
-    color: 'bg-cyan-600',
-    title: { en: 'Sudoku', ar: 'سودوكو' },
-    description: { en: 'A tiny kid-friendly sudoku!', ar: 'سودوكو مبسط للأطفال!' },
-  }),
-  mkGame({
-    id: 'simon',
-    type: GameType.SIMON_SAYS,
-    icon: '🎛️',
-    color: 'bg-fuchsia-600',
-    title: { en: 'Simon Says', ar: 'سيمون يقول' },
-    description: { en: 'Repeat the sequence!', ar: 'كرر التسلسل!' },
-  }),
-  mkGame({
-    id: 'story',
-    type: GameType.STORY_MAKER,
-    icon: '📖',
-    color: 'bg-amber-600',
-    title: { en: 'Story Maker', ar: 'صانع القصص' },
-    description: { en: 'Create a story with your hero!', ar: 'اصنع قصة مع بطلك!' },
-  }),
-  mkGame({
-    id: 'fruit',
+    id: 'fruit_catch',
     type: GameType.FRUIT_CATCH,
-    icon: '🍎',
+    icon: '🍓',
     color: 'bg-red-500',
-    title: { en: 'Fruit Catch', ar: 'التقاط الفواكه' },
-    description: { en: 'Catch the fruit!', ar: 'التقط الفواكه!' },
+    title: { en: 'Fruit Catch', ar: 'اصطياد الفواكه' },
+    description: { en: 'Catch the fruits!', ar: 'التقط الفواكه بسرعة!' }
   }),
   mkGame({
     id: 'drawing',
     type: GameType.DRAWING_PAD,
     icon: '✏️',
-    color: 'bg-orange-500',
+    color: 'bg-amber-500',
     title: { en: 'Drawing Pad', ar: 'لوحة الرسم' },
-    description: { en: 'Draw and color!', ar: 'ارسم ولوّن!' },
+    description: { en: 'Draw and color!', ar: 'ارسم ولوّن!' }
   }),
   mkGame({
-    id: 'shapes',
+    id: 'shape_puzzle',
     type: GameType.SHAPE_PUZZLE,
-    icon: '🔺',
-    color: 'bg-lime-600',
+    icon: '🧩',
+    color: 'bg-orange-500',
     title: { en: 'Shape Puzzle', ar: 'أحجية الأشكال' },
-    description: { en: 'Fit the shapes!', ar: 'ركّب الأشكال!' },
+    description: { en: 'Fit shapes in the right place!', ar: 'ضع الشكل في المكان الصحيح!' }
   }),
   mkGame({
-    id: 'balloons',
+    id: 'balloon_pop',
     type: GameType.BALLOON_POP,
     icon: '🎈',
-    color: 'bg-rose-500',
+    color: 'bg-fuchsia-500',
     title: { en: 'Balloon Pop', ar: 'فرقعة البالونات' },
-    description: { en: 'Pop balloons quickly!', ar: 'فرقّع البالونات بسرعة!' },
+    description: { en: 'Pop the balloons!', ar: 'فرقع البالونات!' }
   }),
   mkGame({
     id: 'treasure',
     type: GameType.TREASURE_HUNT,
-    icon: '🪙',
-    color: 'bg-yellow-600',
-    title: { en: 'Treasure Hunt', ar: 'صيد الكنز' },
-    description: { en: 'Find the treasure!', ar: 'اعثر على الكنز!' },
+    icon: '🗺️',
+    color: 'bg-teal-600',
+    title: { en: 'Treasure Hunt', ar: 'البحث عن الكنز' },
+    description: { en: 'Find the hidden treasure!', ar: 'اعثر على الكنز المخفي!' }
   }),
   mkGame({
-    id: 'odd',
+    id: 'odd_one_out',
     type: GameType.ODD_ONE_OUT,
-    icon: '❓',
-    color: 'bg-violet-600',
-    title: { en: 'Odd One Out', ar: 'الغريب بينهم' },
-    description: { en: 'Pick the different one!', ar: 'اختر المختلف!' },
+    icon: '🧐',
+    color: 'bg-cyan-600',
+    title: { en: 'Odd One Out', ar: 'المختلف' },
+    description: { en: 'Pick what doesn’t belong!', ar: 'اختر العنصر المختلف!' }
   }),
   mkGame({
     id: 'counting',
     type: GameType.COUNTING,
     icon: '⭐',
-    color: 'bg-sky-600',
+    color: 'bg-yellow-500',
     title: { en: 'Counting Stars', ar: 'عدّ النجوم' },
-    description: { en: 'Count and learn!', ar: 'عدّ وتعلّم!' },
+    description: { en: 'Count and learn numbers!', ar: 'عدّ وتعلّم الأرقام!' }
+  }),
+  mkGame({
+    id: 'logic_patterns',
+    type: GameType.LOGIC,
+    icon: '🧠',
+    color: 'bg-lime-600',
+    title: { en: 'Logic Patterns', ar: 'أنماط منطقية' },
+    description: { en: 'Solve pattern puzzles!', ar: 'حل ألغاز الأنماط!' }
+  }),
+  mkGame({
+    id: 'sudoku',
+    type: GameType.LOGIC,
+    icon: '🔲',
+    color: 'bg-green-700',
+    title: { en: 'Sudoku', ar: 'سودوكو' },
+    description: { en: 'Fill the grid smartly!', ar: 'املأ الشبكة بذكاء!' }
+  }),
+  mkGame({
+    id: 'simon',
+    type: GameType.SIMON_SAYS,
+    icon: '🟣',
+    color: 'bg-violet-600',
+    title: { en: 'Simon Says', ar: 'سيمون يقول' },
+    description: { en: 'Repeat the sequence!', ar: 'كرر التسلسل الصحيح!' }
+  }),
+  mkGame({
+    id: 'story',
+    type: GameType.STORY_MAKER,
+    icon: '📖',
+    color: 'bg-rose-600',
+    title: { en: 'Story Maker', ar: 'صانع القصص' },
+    description: { en: 'Create a fun story!', ar: 'اصنع قصة ممتعة!' }
   }),
 ];
 
 export const SOUNDTRACKS: Soundtrack[] = [
   {
-    id: 'forest',
-    name: { en: 'Forest Morning', ar: 'صباح الغابة' },
-    url: 'https://actions.google.com/sounds/v1/ambiences/forest_morning.ogg',
+    id: 'adventure',
+    name: { en: 'Adventure', ar: 'مغامرة' },
+    url: 'https://actions.google.com/sounds/v1/ambiences/forest_morning.ogg'
   },
   {
-    id: 'stream',
-    name: { en: 'Gentle Stream', ar: 'جدول هادئ' },
-    url: 'https://actions.google.com/sounds/v1/water/gentle_stream.ogg',
+    id: 'happy',
+    name: { en: 'Happy Day', ar: 'يوم سعيد' },
+    url: 'https://actions.google.com/sounds/v1/cartoon/cartoon_boing.ogg'
   },
   {
-    id: 'rain',
-    name: { en: 'Light Rain', ar: 'مطر خفيف' },
-    url: 'https://actions.google.com/sounds/v1/weather/rain.ogg',
-  },
-  {
-    id: 'wind',
-    name: { en: 'Soft Wind', ar: 'نسيم لطيف' },
-    url: 'https://actions.google.com/sounds/v1/ambiences/wind_chimes.ogg',
-  },
+    id: 'calm',
+    name: { en: 'Calm', ar: 'هدوء' },
+    url: 'https://actions.google.com/sounds/v1/water/gentle_stream.ogg'
+  }
 ];
