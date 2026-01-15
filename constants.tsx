@@ -1,11 +1,11 @@
 import { Character, Game, Soundtrack } from './types';
 
-// FIXED: Exact file names from your screenshot (Case Sensitive!)
 export const CHARACTERS: Character[] = [
   {
     id: 'fares',
     name: { en: 'Fares', ar: 'فارس' },
-    image: '/Hero-World/characters/fares.jpg', // Fixed: .jpg (lowercase)
+    // Fixed: matches "fares.jpg" in your screenshot
+    image: '/Hero-World/characters/fares.jpg', 
     color: 'from-blue-400 to-cyan-300',
     description: { 
       en: 'The smart doctor who helps everyone', 
@@ -15,7 +15,7 @@ export const CHARACTERS: Character[] = [
   {
     id: 'taj',
     name: { en: 'Taj', ar: 'تاج' },
-    image: '/Hero-World/characters/Taj.JPG', // Fixed: .JPG (uppercase)
+    image: '/Hero-World/characters/Taj.JPG',
     color: 'from-pink-400 to-rose-300',
     description: { 
       en: 'The little princess who loves adventure', 
@@ -25,7 +25,7 @@ export const CHARACTERS: Character[] = [
   {
     id: 'faisal',
     name: { en: 'Faisal', ar: 'فيصل' },
-    image: '/Hero-World/characters/Faisal.JPG', // Fixed: .JPG (uppercase)
+    image: '/Hero-World/characters/Faisal.JPG',
     color: 'from-yellow-400 to-orange-300',
     description: { 
       en: 'The champion of colorful balloons', 
@@ -35,7 +35,7 @@ export const CHARACTERS: Character[] = [
   {
     id: 'elyas',
     name: { en: 'Elyas', ar: 'إلياس' },
-    image: '/Hero-World/characters/Elyas.JPG', // Fixed: .JPG (uppercase)
+    image: '/Hero-World/characters/Elyas.JPG',
     color: 'from-blue-500 to-indigo-400',
     description: { 
       en: 'The brave doctor ready for any challenge', 
@@ -45,7 +45,7 @@ export const CHARACTERS: Character[] = [
   {
     id: 'misk',
     name: { en: 'Misk', ar: 'مسك' },
-    image: '/Hero-World/characters/Misk.JPG', // Fixed: .JPG (uppercase)
+    image: '/Hero-World/characters/Misk.JPG',
     color: 'from-purple-400 to-pink-300',
     description: { 
       en: 'The elegant girl with a kind heart', 
@@ -55,7 +55,7 @@ export const CHARACTERS: Character[] = [
   {
     id: 'joud',
     name: { en: 'Joud', ar: 'جود' },
-    image: '/Hero-World/characters/Joud.JPG', // Fixed: .JPG (uppercase)
+    image: '/Hero-World/characters/Joud.JPG',
     color: 'from-red-300 to-pink-300',
     description: { 
       en: 'The joyful star that brightens the day', 
@@ -65,7 +65,8 @@ export const CHARACTERS: Character[] = [
   {
     id: 'tanya',
     name: { en: 'Tanya', ar: 'تانيا' },
-    image: '/Hero-World/characters/tanya.jpg', // Fixed: .jpg (lowercase)
+    // Fixed: matches "tanya.jpg" in your screenshot
+    image: '/Hero-World/characters/tanya.jpg', 
     color: 'from-amber-200 to-yellow-100',
     description: { 
       en: 'The curious explorer with flowers', 
@@ -75,7 +76,7 @@ export const CHARACTERS: Character[] = [
   {
     id: 'alice',
     name: { en: 'Alice', ar: 'أليس' },
-    image: '/Hero-World/characters/Alice.JPG', // Fixed: .JPG (uppercase)
+    image: '/Hero-World/characters/Alice.JPG',
     color: 'from-gray-700 to-gray-500',
     description: { 
       en: 'The little princess full of smiles', 
@@ -121,7 +122,6 @@ export const SOUNDTRACKS: Soundtrack[] = [
   {
     id: 'adventure',
     name: { en: 'Adventure', ar: 'مغامرة' },
-    // Using a reliable MP3 source to prevent 403 errors
     url: 'https://actions.google.com/sounds/v1/ambiences/forest_morning.ogg'
   },
   {
