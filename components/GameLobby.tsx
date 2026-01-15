@@ -1,4 +1,3 @@
-
 import React from 'react';
 import { Character, Game, UserProgress } from '../types';
 import { translations } from '../translations';
@@ -11,23 +10,52 @@ interface Props {
   onBack: () => void;
 }
 
+const getText = (obj: any, lang: any, fallback = ''): string => {
+  if (!obj) return fallback;
+  return obj[lang] ?? obj.en ?? obj.ar ?? fallback;
+};
+
+const fallbackSrcFor = (src: string) => {
+  if (src.includes('/characters/')) return src.replace('/characters/', '/');
+  if (src.includes('characters/')) return src.replace('characters/', '');
+  return src;
+};
+
 const GameLobby: React.FC<Props> = ({ character, games, progress, onSelectGame, onBack }) => {
   const lang = progress.language;
-  const t = translations[lang];
+  const t = (translations as any)[lang] || (translations as any).en;
+
+  const charAny: any = character;
+  const charSrc = charAny.imageUrl ?? charAny.image ?? '';
+  const charAltSrc = fallbackSrcFor(charSrc);
 
   return (
     <div>
       <div className="flex items-center justify-between mb-12 bg-white/80 backdrop-blur p-4 rounded-3xl shadow-sm border-2 border-white">
         <div className="flex items-center gap-4">
-          <img src={character.imageUrl} className="w-16 h-16 rounded-full border-4 border-orange-400 shadow-md" alt="" />
+          <img
+            src={charSrc}
+            className="w-16 h-16 rounded-full border-4 border-orange-400 shadow-md object-cover"
+            alt=""
+            onError={(e) => {
+              const img = e.currentTarget;
+              if (!img.dataset.fallbackTried) {
+                img.dataset.fallbackTried = '1';
+                img.src = charAltSrc;
+              }
+            }}
+          />
           <div>
             <h2 className="text-2xl font-black text-gray-800">{t.welcome_hero}</h2>
             <p className="text-gray-600">
-              {t.i_am} <span className="text-orange-600 font-bold">{character.name[lang]}</span> {t.share_fun}
+              {t.i_am}{' '}
+              <span className="text-orange-600 font-bold">{getText((charAny.name as any), lang, '')}</span>{' '}
+              {t.share_fun}
             </p>
           </div>
         </div>
-        <button 
+
+        <button
           onClick={onBack}
           className="bg-orange-500 text-white px-6 py-2 rounded-full font-bold hover:bg-orange-600 shadow-md transition-all hover:scale-105"
         >
@@ -36,10 +64,15 @@ const GameLobby: React.FC<Props> = ({ character, games, progress, onSelectGame, 
       </div>
 
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-        {games.map((game) => {
-          const unlocked = progress.unlockedLevels[game.id] || 1;
+        {(games || []).map((game: any) => {
+          const unlocked = progress.unlockedLevels?.[game.id] || 1;
+
+          const titleObj = game.title ?? game.name; // support both
+          const title = getText(titleObj, lang, game.id);
+          const desc = getText(game.description, lang, '');
+
           return (
-            <div 
+            <div
               key={game.id}
               onClick={() => onSelectGame(game)}
               className={`${game.color} child-card rounded-3xl p-8 shadow-xl cursor-pointer text-white flex flex-col items-center text-center relative overflow-hidden group`}
@@ -47,9 +80,9 @@ const GameLobby: React.FC<Props> = ({ character, games, progress, onSelectGame, 
               <div className="game-icon text-6xl mb-4 animate-bounce-slow drop-shadow-lg transition-all duration-300">
                 {game.icon}
               </div>
-              <h3 className="text-3xl font-black mb-2">{game.title[lang]}</h3>
-              <p className="text-white/90 mb-6 text-lg">{game.description[lang]}</p>
-              
+              <h3 className="text-3xl font-black mb-2">{title}</h3>
+              <p className="text-white/90 mb-6 text-lg">{desc}</p>
+
               <div className="bg-white/30 px-6 py-2 rounded-full font-bold text-sm backdrop-blur-sm border border-white/20">
                 {t.unlocked_level}: {unlocked} {t.of} 30
               </div>
