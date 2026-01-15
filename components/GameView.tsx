@@ -1,4 +1,3 @@
-
 import React, { useState } from 'react';
 import { Game, Character, GameType, Difficulty, Language } from '../types';
 import { translations } from '../translations';
@@ -31,12 +30,38 @@ interface Props {
 
 type Emotion = 'idle' | 'happy' | 'sad';
 
+const getText = (obj: any, lang: Language, fallback = ''): string => {
+  if (!obj) return fallback;
+  return obj[lang] ?? obj.en ?? obj.ar ?? fallback;
+};
+
+const fallbackSrcFor = (src: string) => {
+  if (src.includes('/characters/')) return src.replace('/characters/', '/');
+  if (src.includes('characters/')) return src.replace('characters/', '');
+  return src;
+};
+
+const inferType = (g: any): GameType | undefined => {
+  if (g?.type) return g.type;
+  // fallback by id (prevents undefined type if constants are incomplete)
+  switch (g?.id) {
+    case 'memory':
+      return GameType.MEMORY;
+    case 'math':
+      return GameType.MATH;
+    case 'colors':
+      return GameType.COLOR_MATCH;
+    default:
+      return undefined;
+  }
+};
+
 const GameView: React.FC<Props> = ({ game, character, currentMaxLevel, onBack, onComplete, lang }) => {
   const [selectedLevel, setSelectedLevel] = useState<number | null>(null);
   const [difficulty, setDifficulty] = useState<Difficulty | null>(null);
   const [emotion, setEmotion] = useState<Emotion>('idle');
 
-  const t = translations[lang];
+  const t = (translations as any)[lang] || (translations as any).en;
 
   const triggerReaction = (type: Emotion) => {
     setEmotion(type);
@@ -60,7 +85,9 @@ const GameView: React.FC<Props> = ({ game, character, currentMaxLevel, onBack, o
       onIncorrect: () => triggerReaction('sad'),
     };
 
-    switch (game.type) {
+    const type = inferType(game as any);
+
+    switch (type) {
       case GameType.MEMORY:
         return <MemoryGame {...commonProps} />;
       case GameType.MATH:
@@ -88,52 +115,70 @@ const GameView: React.FC<Props> = ({ game, character, currentMaxLevel, onBack, o
       case GameType.COUNTING:
         return <CountingStars {...commonProps} />;
       case GameType.LOGIC:
-        if (game.id === 'sudoku') return <SudokuGame {...commonProps} />;
+        if ((game as any).id === 'sudoku') return <SudokuGame {...commonProps} />;
         return <LogicPatterns {...commonProps} />;
       case GameType.SIMON_SAYS:
         return <SimonSays {...commonProps} />;
       case GameType.STORY_MAKER:
-        // Pass current language (lang) to StoryMaker for correct string interpolation and UI text.
         return <StoryMaker {...commonProps} character={character} lang={lang} />;
       default:
-        return null;
+        return (
+          <div className="bg-white/80 p-6 rounded-3xl text-center text-gray-700">
+            This game type is not configured yet.
+          </div>
+        );
     }
   };
 
   const handleBack = () => {
-    if (selectedLevel) {
-      setSelectedLevel(null);
-    } else if (difficulty) {
-      setDifficulty(null);
-    } else {
-      onBack();
-    }
+    if (selectedLevel) setSelectedLevel(null);
+    else if (difficulty) setDifficulty(null);
+    else onBack();
   };
+
+  const charAny: any = character;
+  const charSrc = charAny.imageUrl ?? charAny.image ?? '';
+  const charAltSrc = fallbackSrcFor(charSrc);
+
+  const titleObj = (game as any).title ?? (game as any).name;
+  const gameTitle = getText(titleObj, lang, game.id);
 
   return (
     <div className="max-w-4xl mx-auto pb-20">
       <div className="flex items-center justify-between mb-8">
-        <button onClick={handleBack} className="text-4xl hover:scale-125 transition-transform bg-white/80 p-2 rounded-full shadow-md">🔙</button>
+        <button onClick={handleBack} className="text-4xl hover:scale-125 transition-transform bg-white/80 p-2 rounded-full shadow-md">
+          🔙
+        </button>
+
         <div className="flex items-center gap-4 bg-white/90 px-6 py-2 rounded-full shadow-md border-2 border-orange-200">
-          <span className="text-2xl">{game.icon}</span>
-          <h1 className="text-2xl font-black text-gray-800">{game.title[lang]}</h1>
+          <span className="text-2xl">{(game as any).icon}</span>
+          <h1 className="text-2xl font-black text-gray-800">{gameTitle}</h1>
         </div>
-        
+
         <div className="relative group">
-           <div className={`
-             absolute -inset-2 bg-gradient-to-tr from-yellow-400 to-orange-500 rounded-full blur opacity-30 group-hover:opacity-50 transition-opacity
-             ${emotion === 'happy' ? 'animate-ping' : ''}
-           `}></div>
-           <img 
-             src={character.imageUrl} 
-             className={`
-               w-20 h-20 rounded-full border-4 border-white shadow-xl transition-all duration-500 relative z-10
-               ${emotion === 'happy' ? 'scale-110 animate-bounce' : ''}
-               ${emotion === 'sad' ? 'grayscale brightness-75 animate-shake' : ''}
-               ${emotion === 'idle' ? 'animate-bounce-slow' : ''}
-             `} 
-             alt={character.name[lang]} 
-           />
+          <div
+            className={`
+              absolute -inset-2 bg-gradient-to-tr from-yellow-400 to-orange-500 rounded-full blur opacity-30 group-hover:opacity-50 transition-opacity
+              ${emotion === 'happy' ? 'animate-ping' : ''}
+            `}
+          ></div>
+          <img
+            src={charSrc}
+            className={`
+              w-20 h-20 rounded-full border-4 border-white shadow-xl transition-all duration-500 relative z-10 object-cover
+              ${emotion === 'happy' ? 'scale-110 animate-bounce' : ''}
+              ${emotion === 'sad' ? 'grayscale brightness-75 animate-shake' : ''}
+              ${emotion === 'idle' ? 'animate-bounce-slow' : ''}
+            `}
+            alt={getText(charAny.name, lang, '')}
+            onError={(e) => {
+              const img = e.currentTarget;
+              if (!img.dataset.fallbackTried) {
+                img.dataset.fallbackTried = '1';
+                img.src = charAltSrc;
+              }
+            }}
+          />
         </div>
       </div>
 
@@ -169,7 +214,11 @@ const GameView: React.FC<Props> = ({ game, character, currentMaxLevel, onBack, o
                   key={level}
                   disabled={isLocked}
                   onClick={() => setSelectedLevel(level)}
-                  className={`h-16 rounded-2xl flex items-center justify-center text-xl font-black transition-all shadow-md ${isLocked ? 'bg-gray-200 text-gray-400 grayscale' : 'bg-white text-orange-500 border-b-4 border-orange-200 hover:scale-110 active:scale-95'}`}
+                  className={`h-16 rounded-2xl flex items-center justify-center text-xl font-black transition-all shadow-md ${
+                    isLocked
+                      ? 'bg-gray-200 text-gray-400 grayscale'
+                      : 'bg-white text-orange-500 border-b-4 border-orange-200 hover:scale-110 active:scale-95'
+                  }`}
                 >
                   {isLocked ? '🔒' : level}
                 </button>
