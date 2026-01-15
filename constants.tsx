@@ -1,82 +1,136 @@
+import { Character, Game, Soundtrack } from './types';
 
-import { Character, Game, GameType } from './types';
-
+// Updated Character List with new images
 export const CHARACTERS: Character[] = [
-  { 
-    id: 'taj', 
-    name: { ar: 'تاج', en: 'Taj' }, 
-    imageUrl: 'https://images.unsplash.com/photo-1595064085577-7c2ef98ec311?auto=format&fit=crop&q=80&w=400', 
-    description: { ar: 'الأميرة الصغيرة التي تحب المغامرة', en: 'The little princess who loves adventure' }, 
-    personality: 'royal' 
+  {
+    id: 'fares',
+    name: { en: 'Fares', ar: 'فارس' },
+    image: './characters/fares.jpg',
+    color: 'from-blue-400 to-cyan-300',
+    description: { 
+      en: 'The smart doctor who helps everyone', 
+      ar: 'الطبيب الذكي الذي يساعد الجميع' 
+    }
   },
-  { 
-    id: 'fares', 
-    name: { ar: 'فارس', en: 'Fares' }, 
-    imageUrl: 'https://images.unsplash.com/photo-1622253692010-333f2da6031d?auto=format&fit=crop&q=80&w=400', 
-    description: { ar: 'الدكتور الذكي الذي يساعد الجميع', en: 'The smart doctor who helps everyone' }, 
-    personality: 'helpful' 
+  {
+    id: 'taj',
+    name: { en: 'Taj', ar: 'تاج' },
+    image: './characters/taj.jpg',
+    color: 'from-pink-400 to-rose-300',
+    description: { 
+      en: 'The little princess who loves adventure', 
+      ar: 'الأميرة الصغيرة التي تحب المغامرة' 
+    }
   },
-  { 
-    id: 'faisal', 
-    name: { ar: 'فيصل', en: 'Faisal' }, 
-    imageUrl: 'https://images.unsplash.com/photo-1530124560676-586cad3db2f9?auto=format&fit=crop&q=80&w=400', 
-    description: { ar: 'بطل البالونات الملونة والمرحة', en: 'The champion of colorful balloons' }, 
-    personality: 'cheerful' 
+  {
+    id: 'faisal',
+    name: { en: 'Faisal', ar: 'فيصل' },
+    image: './characters/faisal.jpg',
+    color: 'from-yellow-400 to-orange-300',
+    description: { 
+      en: 'The champion of colorful balloons', 
+      ar: 'بطل البالونات الملونة' 
+    }
   },
-  { 
-    id: 'elyas', 
-    name: { ar: 'إلياس', en: 'Elyas' }, 
-    imageUrl: 'https://images.unsplash.com/photo-1544717297-fa95b3ee21f3?auto=format&fit=crop&q=80&w=400', 
-    description: { ar: 'الطفل الضاحك الذي ينشر البهجة', en: 'The laughing child spreading joy' }, 
-    personality: 'playful' 
+  {
+    id: 'elyas',
+    name: { en: 'Elyas', ar: 'إلياس' },
+    image: './characters/elyas.jpg',
+    color: 'from-blue-500 to-indigo-400',
+    description: { 
+      en: 'The brave doctor ready for any challenge', 
+      ar: 'الطبيب الشجاع المستعد لأي تحدي' 
+    }
   },
-  { 
-    id: 'misk', 
-    name: { ar: 'مسك', en: 'Misk' }, 
-    imageUrl: 'https://images.unsplash.com/photo-1519689689353-897c1d37cd05?auto=format&fit=crop&q=80&w=400', 
-    description: { ar: 'جميلة بفيونكتها النجمية الرائعة', en: 'Beautiful with her amazing star bow' }, 
-    personality: 'sweet' 
+  {
+    id: 'misk',
+    name: { en: 'Misk', ar: 'مسك' },
+    image: './characters/misk.jpg',
+    color: 'from-purple-400 to-pink-300',
+    description: { 
+      en: 'The elegant girl with a kind heart', 
+      ar: 'الفتاة الأنيقة ذات القلب الطيب' 
+    }
   },
-  { 
-    id: 'tanya', 
-    name: { ar: 'تانيا', en: 'Tanya' }, 
-    imageUrl: 'https://images.unsplash.com/photo-1496440737103-cd596325d314?auto=format&fit=crop&q=80&w=400', 
-    description: { ar: 'البنت الأنيقة التي تحب التنظيم', en: 'The elegant girl who loves organization' }, 
-    personality: 'elegant' 
+  {
+    id: 'joud',
+    name: { en: 'Joud', ar: 'جود' },
+    image: './characters/joud.jpg',
+    color: 'from-red-300 to-pink-300',
+    description: { 
+      en: 'The joyful star that brightens the day', 
+      ar: 'النجمة المرحة التي تضيء اليوم' 
+    }
   },
-  { 
-    id: 'joud', 
-    name: { ar: 'جود', en: 'Joud' }, 
-    imageUrl: 'https://images.unsplash.com/photo-1503454537195-1dcabb73ffb9?auto=format&fit=crop&q=80&w=400', 
-    description: { ar: 'النشيطة التي لا تتوقف عن الحركة واللعب', en: 'The active one who never stops playing' }, 
-    personality: 'active' 
+  {
+    id: 'tanya',
+    name: { en: 'Tanya', ar: 'تانيا' },
+    image: './characters/tanya.jpg',
+    color: 'from-amber-200 to-yellow-100',
+    description: { 
+      en: 'The curious explorer with flowers', 
+      ar: 'المستكشفة الفضولية مع الزهور' 
+    }
   },
-  { 
-    id: 'alice', 
-    name: { ar: 'أليس', en: 'Alice' }, 
-    imageUrl: 'https://images.unsplash.com/photo-1544717297-fa95b3ee21f3?auto=format&fit=crop&q=80&w=400', 
-    description: { ar: 'الذكية التي تستكشف عالم التكنولوجيا', en: 'The smart explorer of technology' }, 
-    personality: 'genius' 
+  {
+    id: 'alice',
+    name: { en: 'Alice', ar: 'أليس' },
+    image: './characters/alice.jpg',
+    color: 'from-gray-700 to-gray-500',
+    description: { 
+      en: 'The little princess full of smiles', 
+      ar: 'الأميرة الصغيرة المليئة بالابتسامات' 
+    }
   }
 ];
 
 export const GAMES: Game[] = [
-  { id: 'memory', title: { ar: 'تحدي الذاكرة', en: 'Memory Challenge' }, description: { ar: 'جد الصور المتطابقة واختبر ذكاءك!', en: 'Find matching photos!' }, icon: '🧠', color: 'bg-pink-400', type: GameType.MEMORY },
-  { id: 'math', title: { ar: 'عبقري الأرقام', en: 'Math Genius' }, description: { ar: 'اجمع واطرح الأرقام بطريقة مسلية!', en: 'Add and subtract fun!' }, icon: '🔢', color: 'bg-blue-400', type: GameType.MATH },
-  { id: 'odd_one', title: { ar: 'العنصر المختلف', en: 'Odd One Out' }, description: { ar: 'ابحث عن الشيء الذي لا ينتمي للمجموعة!', en: 'Find the odd one!' }, icon: '🔍', color: 'bg-amber-400', type: GameType.ODD_ONE_OUT },
-  { id: 'counting', title: { ar: 'عدّ النجوم', en: 'Count the Stars' }, description: { ar: 'كم نجمة ترى في السماء السحرية؟', en: 'How many stars in the sky?' }, icon: '⭐', color: 'bg-indigo-500', type: GameType.COUNTING },
-  { id: 'fruit_catch', title: { ar: 'سلة الفواكه', en: 'Fruit Basket' }, description: { ar: 'التقط الفواكه اللذيذة وتجنب القنابل!', en: 'Catch fruits, avoid bombs!' }, icon: '🍎', color: 'bg-green-400', type: GameType.FRUIT_CATCH },
-  { id: 'drawing', title: { ar: 'مرسم الألوان', en: 'Color Pad' }, description: { ar: 'أطلق العنان للفنان بداخلك!', en: 'Unleash your inner artist!' }, icon: '🎨', color: 'bg-indigo-400', type: GameType.DRAWING_PAD },
-  { id: 'shapes', title: { ar: 'أحجية الأشكال', en: 'Shape Puzzle' }, description: { ar: 'طابق الأشكال الهندسية الملونة!', en: 'Match the colorful shapes!' }, icon: '🔶', color: 'bg-amber-400', type: GameType.SHAPE_PUZZLE },
-  { id: 'balloon_pop', title: { ar: 'فرقعة البالونات', en: 'Balloon Pop' }, description: { ar: 'فرقع البالونات الملونة!', en: 'Pop the balloons!' }, icon: '🎈', color: 'bg-sky-400', type: GameType.BALLOON_POP },
-  { id: 'treasure_hunt', title: { ar: 'البحث عن الكنز', en: 'Treasure Hunt' }, description: { ar: 'كن مستكشفاً وابحث عن الذهب!', en: 'Find the hidden gold!' }, icon: '🗺️', color: 'bg-orange-800', type: GameType.TREASURE_HUNT },
-  { id: 'alphabet', title: { ar: 'قطار الحروف', en: 'Alphabet Train' }, description: { ar: 'رحلة ممتعة لتعلم الحروف!', en: 'Learn letters adventure!' }, icon: '🔤', color: 'bg-purple-400', type: GameType.ALPHABET },
-  { id: 'shadow', title: { ar: 'صائد الظلال', en: 'Shadow Catcher' }, description: { ar: 'طابق كل بطل بظله السري!', en: 'Match shadows!' }, icon: '👤', color: 'bg-emerald-400', type: GameType.SHADOW_MATCH },
-  { id: 'piano', title: { ar: 'البيانو السحري', en: 'Magic Piano' }, description: { ar: 'اعزف ألحانك الخاصة!', en: 'Play your own music!' }, icon: '🎹', color: 'bg-cyan-500', type: GameType.PIANO },
+  {
+    id: 'memory',
+    name: { en: 'Memory Cards', ar: 'بطاقات الذاكرة' },
+    icon: '🎴',
+    color: 'bg-purple-500',
+    description: { 
+      en: 'Find matching pairs!', 
+      ar: 'جد البطاقات المتطابقة!' 
+    }
+  },
+  {
+    id: 'math',
+    name: { en: 'Math Hero', ar: 'بطل الرياضيات' },
+    icon: '🔢',
+    color: 'bg-blue-500',
+    description: { 
+      en: 'Solve fun math problems!', 
+      ar: 'حل مسائل حسابية ممتعة!' 
+    }
+  },
+  {
+    id: 'colors',
+    name: { en: 'Color Master', ar: 'سيد الألوان' },
+    icon: '🎨',
+    color: 'bg-pink-500',
+    description: { 
+      en: 'Match the colors!', 
+      ar: 'طابق الألوان!' 
+    }
+  }
 ];
 
-export const SOUNDTRACKS = [
-  { id: 'happy', name: { ar: 'مرح', en: 'Happy' }, url: 'https://www.soundhelix.com/examples/mp3/SoundHelix-Song-1.mp3' },
-  { id: 'adventure', name: { ar: 'مغامرة', en: 'Adventure' }, url: 'https://www.soundhelix.com/examples/mp3/SoundHelix-Song-8.mp3' },
-  { id: 'calm', name: { ar: 'هادئ', en: 'Calm' }, url: 'https://www.soundhelix.com/examples/mp3/SoundHelix-Song-10.mp3' }
+export const SOUNDTRACKS: Soundtrack[] = [
+  {
+    id: 'adventure',
+    name: { en: 'Adventure', ar: 'مغامرة' },
+    url: 'https://cdn.pixabay.com/download/audio/2022/03/15/audio_c8c8a73467.mp3'
+  },
+  {
+    id: 'happy',
+    name: { en: 'Happy Day', ar: 'يوم سعيد' },
+    url: 'https://cdn.pixabay.com/download/audio/2022/01/18/audio_d0a13f69d2.mp3'
+  },
+  {
+    id: 'calm',
+    name: { en: 'Calm', ar: 'هدوء' },
+    url: 'https://cdn.pixabay.com/download/audio/2022/05/27/audio_1808fbf07a.mp3'
+  }
 ];
