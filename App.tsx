@@ -12,6 +12,7 @@ const App: React.FC = () => {
   const [step, setStep] = useState<'selection' | 'lobby' | 'game'>('selection');
   const [isMuted, setIsMuted] = useState(false);
   const [currentTrackIndex, setCurrentTrackIndex] = useState(0);
+  const [audioUnlocked, setAudioUnlocked] = useState(false);
   const audioRef = useRef<HTMLAudioElement | null>(null);
 
   const [progress, setProgress] = useState<UserProgress>(() => {
@@ -35,6 +36,30 @@ const App: React.FC = () => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [lang]);
 
+  // Unlock audio with first real user interaction (browser autoplay policy)
+  // Browsers block autoplay until a gesture. :contentReference[oaicite:2]{index=2}
+  useEffect(() => {
+    const unlock = async () => {
+      if (!audioRef.current) return;
+      try {
+        await audioRef.current.play();
+        setAudioUnlocked(true);
+      } catch {
+        // still blocked — keep unlocked=false
+      }
+    };
+
+    const onFirstGesture = () => unlock();
+
+    window.addEventListener('pointerdown', onFirstGesture, { once: true });
+    window.addEventListener('keydown', onFirstGesture, { once: true });
+
+    return () => {
+      window.removeEventListener('pointerdown', onFirstGesture as any);
+      window.removeEventListener('keydown', onFirstGesture as any);
+    };
+  }, []);
+
   const toggleMute = () => {
     if (!audioRef.current) return;
     audioRef.current.muted = !isMuted;
@@ -48,12 +73,21 @@ const App: React.FC = () => {
     }));
   };
 
-  const changeTrack = () => {
+  const changeTrack = async () => {
     const nextIndex = (currentTrackIndex + 1) % SOUNDTRACKS.length;
     setCurrentTrackIndex(nextIndex);
-    if (audioRef.current) {
-      audioRef.current.src = SOUNDTRACKS[nextIndex].url;
-      audioRef.current.play().catch(() => console.log('Music waiting for interaction'));
+
+    if (!audioRef.current) return;
+
+    audioRef.current.src = SOUNDTRACKS[nextIndex].url;
+
+    try {
+      await audioRef.current.play();
+      setAudioUnlocked(true);
+    } catch {
+      // blocked until gesture
+      setAudioUnlocked(false);
+      console.log('Music waiting for interaction');
     }
   };
 
@@ -62,7 +96,13 @@ const App: React.FC = () => {
     setStep('lobby');
 
     if (audioRef.current) {
-      audioRef.current.play().catch(() => console.log('Music waiting for interaction'));
+      try {
+        await audioRef.current.play();
+        setAudioUnlocked(true);
+      } catch {
+        setAudioUnlocked(false);
+        console.log('Music waiting for interaction');
+      }
     }
   };
 
@@ -111,9 +151,19 @@ const App: React.FC = () => {
     }));
   }, []);
 
+  const trackName =
+    (SOUNDTRACKS[currentTrackIndex]?.name as any)?.[lang] ||
+    (SOUNDTRACKS[currentTrackIndex]?.name as any)?.en ||
+    'Music';
+
   return (
     <div className={`min-h-screen relative overflow-hidden magical-bg ${lang === 'en' ? 'font-sans' : ''}`}>
-      <audio ref={audioRef} loop src={SOUNDTRACKS[currentTrackIndex].url} />
+      <audio
+        ref={audioRef}
+        loop
+        preload="auto"
+        src={SOUNDTRACKS[currentTrackIndex]?.url}
+      />
 
       <div className="absolute inset-0 pointer-events-none overflow-hidden">
         {floatingElements.map((el) => (
@@ -140,12 +190,6 @@ const App: React.FC = () => {
             ✦
           </div>
         ))}
-
-        <div className="absolute top-10 left-10 w-64 h-64 bg-pink-400/20 rounded-full blur-[100px] animate-pulse"></div>
-        <div
-          className="absolute bottom-20 right-10 w-80 h-80 bg-blue-400/20 rounded-full blur-[100px] animate-pulse"
-          style={{ animationDelay: '2s' }}
-        ></div>
       </div>
 
       <main className="relative z-10 container mx-auto px-4 py-8">
@@ -173,7 +217,14 @@ const App: React.FC = () => {
         )}
       </main>
 
-      <div className={`fixed bottom-4 ${lang === 'ar' ? 'left-4' : 'right-4'} z-50 flex gap-2`}>
+      {/* Music unlock hint */}
+      {!audioUnlocked && !isMuted && (
+        <div className="fixed top-4 left-1/2 -translate-x-1/2 z-50 bg-white/90 backdrop-blur px-4 py-2 rounded-full shadow-lg border border-orange-200 text-sm font-bold text-orange-600">
+          Tap / Click anywhere to enable music 🎵
+        </div>
+      )}
+
+      <div className={`fixed bottom-4 ${lang === 'ar' ? 'left-4' : 'right-4'} z-50 flex gap-2 items-center`}>
         <button
           className="bg-white/90 backdrop-blur p-3 rounded-full shadow-lg hover:scale-110 transition-transform flex items-center justify-center h-12 border-2 border-orange-200 font-bold text-orange-600 min-w-[3rem]"
           onClick={toggleLanguage}
@@ -181,12 +232,13 @@ const App: React.FC = () => {
           {t.lang_btn}
         </button>
 
+        {/* Show track name + change track */}
         <button
-          className="bg-white/90 backdrop-blur p-3 rounded-full shadow-lg hover:scale-110 transition-transform flex items-center justify-center w-12 h-12 border-2 border-orange-200"
+          className="bg-white/90 backdrop-blur px-4 py-3 rounded-full shadow-lg hover:scale-110 transition-transform flex items-center justify-center h-12 border-2 border-orange-200 font-bold text-gray-700"
           onClick={changeTrack}
-          title={(SOUNDTRACKS[currentTrackIndex]?.name as any)?.[lang] || 'Music'}
+          title={trackName}
         >
-          🎵
+          🎵 <span className="ml-2 text-sm font-bold">{trackName}</span>
         </button>
 
         <button
