@@ -1,0 +1,127 @@
+
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Hero World | عالم الأبطال</title>
+    <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>🌟</text></svg>">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;700;900&display=swap" rel="stylesheet">
+    <style>
+      body {
+        font-family: 'Cairo', sans-serif;
+        margin: 0;
+        padding: 0;
+        overflow-x: hidden;
+      }
+
+      /* خلفية متدرجة متحركة */
+      .magical-bg {
+        background: linear-gradient(45deg, #fef9c3, #ffedd5, #ecfdf5, #f0f9ff);
+        background-size: 400% 400%;
+        animation: gradientShift 15s ease infinite;
+        min-height: 100vh;
+        width: 100%;
+      }
+
+      @keyframes gradientShift {
+        0% { background-position: 0% 50%; }
+        50% { background-position: 100% 50%; }
+        100% { background-position: 0% 50%; }
+      }
+
+      /* حركة الأشكال العائمة */
+      .floating-shape {
+        position: absolute;
+        pointer-events: none;
+        animation: float 20s linear infinite;
+        opacity: 0.4;
+      }
+
+      @keyframes float {
+        0% { transform: translateY(0) rotate(0deg); opacity: 0; }
+        10% { opacity: 0.4; }
+        90% { opacity: 0.4; }
+        100% { transform: translateY(-100vh) rotate(360deg); opacity: 0; }
+      }
+
+      /* تلألؤ النجوم */
+      .twinkle {
+        animation: twinkle 3s ease-in-out infinite;
+      }
+
+      @keyframes twinkle {
+        0%, 100% { transform: scale(1); opacity: 0.3; }
+        50% { transform: scale(1.5); opacity: 1; }
+      }
+
+      .child-card {
+        transition: transform 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+      }
+      .child-card:hover {
+        transform: scale(1.05);
+      }
+      
+      .child-card .game-icon {
+        transition: transform 0.5s cubic-bezier(0.34, 1.56, 0.64, 1);
+        display: inline-block;
+      }
+      .child-card:hover .game-icon {
+        transform: scale(1.18) rotate(10deg);
+      }
+      
+      .animate-bounce-slow {
+        animation: subtle-alive 3s ease-in-out infinite;
+      }
+      
+      @keyframes subtle-alive {
+        0%, 100% { 
+          transform: translateY(0) scale(1); 
+          filter: drop-shadow(0 5px 15px rgba(0,0,0,0.1));
+        }
+        50% { 
+          transform: translateY(-12px) scale(1.04); 
+          filter: drop-shadow(0 20px 25px rgba(0,0,0,0.15));
+        }
+      }
+
+      @keyframes shake {
+        0%, 100% { transform: translateX(0); }
+        20%, 60% { transform: translateX(-10px); }
+        40%, 80% { transform: translateX(10px); }
+      }
+      .animate-shake {
+        animation: shake 0.4s ease-in-out;
+      }
+      
+      .animate-bounce {
+        animation: bounce 1s infinite;
+      }
+      @keyframes bounce {
+        0%, 100% {
+          transform: translateY(-25%) scaleY(1.1);
+          animation-timing-function: cubic-bezier(0.8, 0, 1, 1);
+        }
+        50% {
+          transform: translateY(0) scaleY(0.9);
+          animation-timing-function: cubic-bezier(0, 0, 0.2, 1);
+        }
+      }
+    </style>
+  <script type="importmap">
+{
+  "imports": {
+    "react/": "https://esm.sh/react@^19.2.3/",
+    "react": "https://esm.sh/react@^19.2.3",
+    "react-dom/": "https://esm.sh/react-dom@^19.2.3/",
+    "@google/genai": "https://esm.sh/@google/genai@^1.36.0"
+  }
+}
+</script>
+</head>
+  <body>
+    <div id="root"></div>
+    <script type="module" src="/index.tsx"></script>
+  </body>
+</html>
