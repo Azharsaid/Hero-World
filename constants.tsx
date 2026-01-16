@@ -1,14 +1,13 @@
-import { Character, Game, Soundtrack } from './types';
+import { Character, Game, Soundtrack, GameType } from './types';
 
-// GitHub Pages project site uses /Hero-World/ as base.
-// Vite exposes that base as import.meta.env.BASE_URL.
+// Vite base for GitHub Pages project sites is exposed here
 const BASE = import.meta.env.BASE_URL;
 
-// Helpers to make paths safe on GitHub Pages
 const char = (file: string) => `${BASE}characters/${file}`;
 const track = (file: string) => `${BASE}soundtracks/${file}`;
 
-export const CHARACTERS: Character[] = [
+// ---- Characters ----
+export const CHARACTERS = [
   {
     id: 'fares',
     name: { en: 'Fares', ar: 'فارس' },
@@ -65,55 +64,176 @@ export const CHARACTERS: Character[] = [
     color: 'from-gray-700 to-gray-500',
     description: { en: 'The little princess full of smiles', ar: 'الأميرة الصغيرة المليئة بالابتسامات' }
   }
-];
+] as any;
 
-// Keeping your current 3 games exactly as-is (no changes here)
-export const GAMES: Game[] = [
+// ---- Games ----
+// Important: GameView uses game.type to decide which component to render.
+// Also, some parts of your UI might use game.title OR game.name, so we include BOTH.
+export const GAMES = [
   {
     id: 'memory',
-    name: { en: 'Memory Cards', ar: 'بطاقات الذاكرة' },
+    type: GameType.MEMORY,
     icon: '🎴',
     color: 'bg-purple-500',
+    title: { en: 'Memory Cards', ar: 'بطاقات الذاكرة' },
+    name:  { en: 'Memory Cards', ar: 'بطاقات الذاكرة' },
     description: { en: 'Find matching pairs!', ar: 'جد البطاقات المتطابقة!' }
   },
   {
     id: 'math',
-    name: { en: 'Math Hero', ar: 'بطل الرياضيات' },
+    type: GameType.MATH,
     icon: '🔢',
     color: 'bg-blue-500',
+    title: { en: 'Math Hero', ar: 'بطل الرياضيات' },
+    name:  { en: 'Math Hero', ar: 'بطل الرياضيات' },
     description: { en: 'Solve fun math problems!', ar: 'حل مسائل حسابية ممتعة!' }
   },
   {
     id: 'colors',
-    name: { en: 'Color Master', ar: 'سيد الألوان' },
+    type: GameType.COLOR_MATCH,
     icon: '🎨',
     color: 'bg-pink-500',
+    title: { en: 'Color Master', ar: 'سيد الألوان' },
+    name:  { en: 'Color Master', ar: 'سيد الألوان' },
     description: { en: 'Match the colors!', ar: 'طابق الألوان!' }
-  }
-];
+  },
 
-// ✅ NEW: local soundtracks ONLY (old URLs removed completely)
-export const SOUNDTRACKS: Soundtrack[] = [
-  { id: 't01', name: { en: 'Track 01', ar: 'مقطوعة 1' }, url: track('1.mp3') },
-  { id: 't02', name: { en: 'Track 02', ar: 'مقطوعة 2' }, url: track('2.mp3') },
-  { id: 't03', name: { en: 'Track 03', ar: 'مقطوعة 3' }, url: track('3.mp3') },
-  { id: 't04', name: { en: 'Track 04', ar: 'مقطوعة 4' }, url: track('4.mp3') },
-  { id: 't05', name: { en: 'Track 05', ar: 'مقطوعة 5' }, url: track('5.mp3') },
-  { id: 't06', name: { en: 'Track 06', ar: 'مقطوعة 6' }, url: track('6.mp3') },
-  { id: 't07', name: { en: 'Track 07', ar: 'مقطوعة 7' }, url: track('7.mp3') },
-  { id: 't08', name: { en: 'Track 08', ar: 'مقطوعة 8' }, url: track('8.mp3') },
-  { id: 't09', name: { en: 'Track 09', ar: 'مقطوعة 9' }, url: track('9.mp3') },
-  { id: 't10', name: { en: 'Track 10', ar: 'مقطوعة 10' }, url: track('10.mp3') },
-  { id: 't11', name: { en: 'Track 11', ar: 'مقطوعة 11' }, url: track('11.mp3') },
-  { id: 't12', name: { en: 'Track 12', ar: 'مقطوعة 12' }, url: track('12.mp3') },
-  { id: 't13', name: { en: 'Track 13', ar: 'مقطوعة 13' }, url: track('13.mp3') },
-  { id: 't14', name: { en: 'Track 14', ar: 'مقطوعة 14' }, url: track('14.mp3') },
-  { id: 't15', name: { en: 'Track 15', ar: 'مقطوعة 15' }, url: track('15.mp3') },
-  { id: 't16', name: { en: 'Track 16', ar: 'مقطوعة 16' }, url: track('16.mp3') },
-  { id: 't17', name: { en: 'Track 17', ar: 'مقطوعة 17' }, url: track('17.mp3') },
-  { id: 't18', name: { en: 'Track 18', ar: 'مقطوعة 18' }, url: track('18.mp3') },
-  { id: 't19', name: { en: 'Track 19', ar: 'مقطوعة 19' }, url: track('19.mp3') },
-  { id: 't20', name: { en: 'Track 20', ar: 'مقطوعة 20' }, url: track('20.mp3') },
-  { id: 't21', name: { en: 'Track 21', ar: 'مقطوعة 21' }, url: track('21.mp3') },
-  { id: 't22', name: { en: 'Track 22', ar: 'مقطوعة 22' }, url: track('22.mp3') }
-];
+  // More games (your GameView already imports these components)
+  {
+    id: 'alphabet',
+    type: GameType.ALPHABET,
+    icon: '🔤',
+    color: 'bg-emerald-500',
+    title: { en: 'Alphabet Adventure', ar: 'مغامرة الحروف' },
+    name:  { en: 'Alphabet Adventure', ar: 'مغامرة الحروف' },
+    description: { en: 'Learn letters with fun!', ar: 'تعلّم الحروف بطريقة ممتعة!' }
+  },
+  {
+    id: 'piano',
+    type: GameType.PIANO,
+    icon: '🎹',
+    color: 'bg-indigo-500',
+    title: { en: 'Magical Piano', ar: 'البيانو السحري' },
+    name:  { en: 'Magical Piano', ar: 'البيانو السحري' },
+    description: { en: 'Play music notes!', ar: 'اعزف نغمات جميلة!' }
+  },
+  {
+    id: 'shadow',
+    type: GameType.SHADOW_MATCH,
+    icon: '👤',
+    color: 'bg-slate-600',
+    title: { en: 'Shadow Match', ar: 'طابق الظلال' },
+    name:  { en: 'Shadow Match', ar: 'طابق الظلال' },
+    description: { en: 'Match the shape to its shadow!', ar: 'طابق الشكل مع ظله!' }
+  },
+  {
+    id: 'fruit_catch',
+    type: GameType.FRUIT_CATCH,
+    icon: '🍓',
+    color: 'bg-red-500',
+    title: { en: 'Fruit Catch', ar: 'اصطياد الفواكه' },
+    name:  { en: 'Fruit Catch', ar: 'اصطياد الفواكه' },
+    description: { en: 'Catch the fruits!', ar: 'التقط الفواكه بسرعة!' }
+  },
+  {
+    id: 'drawing',
+    type: GameType.DRAWING_PAD,
+    icon: '✏️',
+    color: 'bg-amber-500',
+    title: { en: 'Drawing Pad', ar: 'لوحة الرسم' },
+    name:  { en: 'Drawing Pad', ar: 'لوحة الرسم' },
+    description: { en: 'Draw and color!', ar: 'ارسم ولوّن!' }
+  },
+  {
+    id: 'shape_puzzle',
+    type: GameType.SHAPE_PUZZLE,
+    icon: '🧩',
+    color: 'bg-orange-500',
+    title: { en: 'Shape Puzzle', ar: 'أحجية الأشكال' },
+    name:  { en: 'Shape Puzzle', ar: 'أحجية الأشكال' },
+    description: { en: 'Fit shapes in the right place!', ar: 'ضع الشكل في المكان الصحيح!' }
+  },
+  {
+    id: 'balloon_pop',
+    type: GameType.BALLOON_POP,
+    icon: '🎈',
+    color: 'bg-fuchsia-500',
+    title: { en: 'Balloon Pop', ar: 'فرقعة البالونات' },
+    name:  { en: 'Balloon Pop', ar: 'فرقعة البالونات' },
+    description: { en: 'Pop the balloons!', ar: 'فرقع البالونات!' }
+  },
+  {
+    id: 'treasure',
+    type: GameType.TREASURE_HUNT,
+    icon: '🗺️',
+    color: 'bg-teal-600',
+    title: { en: 'Treasure Hunt', ar: 'البحث عن الكنز' },
+    name:  { en: 'Treasure Hunt', ar: 'البحث عن الكنز' },
+    description: { en: 'Find the hidden treasure!', ar: 'اعثر على الكنز المخفي!' }
+  },
+  {
+    id: 'odd_one_out',
+    type: GameType.ODD_ONE_OUT,
+    icon: '🧐',
+    color: 'bg-cyan-600',
+    title: { en: 'Odd One Out', ar: 'المختلف' },
+    name:  { en: 'Odd One Out', ar: 'المختلف' },
+    description: { en: 'Pick what doesn’t belong!', ar: 'اختر العنصر المختلف!' }
+  },
+  {
+    id: 'counting',
+    type: GameType.COUNTING,
+    icon: '⭐',
+    color: 'bg-yellow-500',
+    title: { en: 'Counting Stars', ar: 'عدّ النجوم' },
+    name:  { en: 'Counting Stars', ar: 'عدّ النجوم' },
+    description: { en: 'Count and learn numbers!', ar: 'عدّ وتعلّم الأرقام!' }
+  },
+  {
+    id: 'logic_patterns',
+    type: GameType.LOGIC,
+    icon: '🧠',
+    color: 'bg-lime-600',
+    title: { en: 'Logic Patterns', ar: 'أنماط منطقية' },
+    name:  { en: 'Logic Patterns', ar: 'أنماط منطقية' },
+    description: { en: 'Solve pattern puzzles!', ar: 'حل ألغاز الأنماط!' }
+  },
+  {
+    id: 'sudoku',
+    type: GameType.LOGIC,
+    icon: '🔲',
+    color: 'bg-green-700',
+    title: { en: 'Sudoku', ar: 'سودوكو' },
+    name:  { en: 'Sudoku', ar: 'سودوكو' },
+    description: { en: 'Fill the grid smartly!', ar: 'املأ الشبكة بذكاء!' }
+  },
+  {
+    id: 'simon',
+    type: GameType.SIMON_SAYS,
+    icon: '🟣',
+    color: 'bg-violet-600',
+    title: { en: 'Simon Says', ar: 'سيمون يقول' },
+    name:  { en: 'Simon Says', ar: 'سيمون يقول' },
+    description: { en: 'Repeat the sequence!', ar: 'كرر التسلسل الصحيح!' }
+  },
+  {
+    id: 'story',
+    type: GameType.STORY_MAKER,
+    icon: '📖',
+    color: 'bg-rose-600',
+    title: { en: 'Story Maker', ar: 'صانع القصص' },
+    name:  { en: 'Story Maker', ar: 'صانع القصص' },
+    description: { en: 'Create a fun story!', ar: 'اصنع قصة ممتعة!' }
+  }
+] as any;
+
+// ---- Soundtracks (local only) ----
+export const SOUNDTRACKS = Array.from({ length: 22 }).map((_, i) => {
+  const n = i + 1;
+  const id = `t${String(n).padStart(2, '0')}`;
+  return {
+    id,
+    name: { en: `Track ${String(n).padStart(2, '0')}`, ar: `مقطوعة ${n}` },
+    url: track(`${n}.mp3`)
+  };
+}) as any;
